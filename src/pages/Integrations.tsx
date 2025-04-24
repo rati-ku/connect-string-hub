@@ -134,15 +134,17 @@ const Integrations = () => {
 
 const downloadDbVisualizer = async () => {
   try {
-    // Create a new JSZip instance
     const zip = new JSZip();
     
-    // Create META-INF directory and add MANIFEST.MF
-    const manifestContent = `Manifest-Version: 1.0\nDbVisualizer-Version: 25.1.3\nDbVisualizer-Config-Version: 251\nDbVisualizer-Config-Directory: config251\n`;
-    zip.file('META-INF/MANIFEST.MF', manifestContent);
+    // Add all files from unistream-jar directory
+    const addFilesToZip = async (path, zipPath = '') => {
+      const response = await fetch(`/src/materials/unistream-jar/${path}`);
+      const content = await response.blob();
+      zip.file(zipPath + path, content);
+    };
 
-    // Add config251/dbvis.xml with replaced parameters
-    const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+    // Create modified dbvis.xml content with user parameters
+    const modifiedXmlContent = `<?xml version="1.0" encoding="UTF-8"?>
 <DbVisualizer>
   <Databases>
     <Database id="j7fHKTe3i4YIsGfw4n06h">
@@ -179,38 +181,21 @@ const downloadDbVisualizer = async () => {
   </Objects>
 </DbVisualizer>`;
 
-    zip.file('config251/dbvis.xml', xmlContent);
+    // Add the modified dbvis.xml
+    zip.file('config251/dbvis.xml', modifiedXmlContent);
 
-    // Fetch all files from the drivers directory recursively
-    const driversResponse = await fetch('/src/materials/unistream-jar/drivers/maven/', { 
+    // Recursively get all files from the unistream-jar directory
+    const files = await fetch('/src/materials/unistream-jar/', { 
       headers: { 'Accept': 'application/json' }
     });
-    const driversData = await driversResponse.json();
+    const filesData = await files.json();
 
-    // Recursively add all files from the drivers directory
-    const addFilesToZip = async (path) => {
-      const response = await fetch(path);
-      if (response.ok) {
-        const content = await response.blob();
-        const relativePath = path.replace('/src/materials/unistream-jar/', '');
-        zip.file(relativePath, content);
+    // Add all files except dbvis.xml (which we already added with modifications)
+    for (const file of filesData) {
+      if (file.name !== 'dbvis.xml') {
+        await addFilesToZip(file.name);
       }
-    };
-
-    // Add all driver files
-    const addDrivers = async (currentPath) => {
-      for (const item of driversData) {
-        if (item.type === 'file') {
-          await addFilesToZip(`${currentPath}${item.name}`);
-        } else if (item.type === 'directory') {
-          const subDirResponse = await fetch(`${currentPath}${item.name}/`);
-          const subDirData = await subDirResponse.json();
-          await addDrivers(`${currentPath}${item.name}/`);
-        }
-      }
-    };
-
-    await addDrivers('/src/materials/unistream-jar/drivers/maven/');
+    }
 
     // Generate the JAR file
     const jarBlob = await zip.generateAsync({
