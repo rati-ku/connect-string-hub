@@ -132,19 +132,11 @@ const Integrations = () => {
     toast.success("Connection configuration downloaded!");
   };
 
-const downloadDbVisualizer = async () => {
-  try {
-    const zip = new JSZip();
-    
-    // Add all files from unistream-jar directory
-    const addFilesToZip = async (path, zipPath = '') => {
-      const response = await fetch(`/src/materials/unistream-jar/${path}`);
-      const content = await response.blob();
-      zip.file(zipPath + path, content);
-    };
-
-    // Create modified dbvis.xml content with user parameters
-    const modifiedXmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+  const downloadDbVisualizer = async () => {
+    try {
+      // Create a direct download of the XML file only
+      // This is a simplified approach since we can't access the full JAR structure in the browser environment
+      const modifiedXmlContent = `<?xml version="1.0" encoding="UTF-8"?>
 <DbVisualizer>
   <Databases>
     <Database id="j7fHKTe3i4YIsGfw4n06h">
@@ -181,53 +173,31 @@ const downloadDbVisualizer = async () => {
   </Objects>
 </DbVisualizer>`;
 
-    // Add the modified dbvis.xml
-    zip.file('config251/dbvis.xml', modifiedXmlContent);
+      // Create a download link for the XML file
+      const element = document.createElement("a");
+      const file = new Blob([modifiedXmlContent], { type: 'application/xml' });
+      element.href = URL.createObjectURL(file);
+      element.download = `dbvis_${email.split('@')[0]}.xml`;
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
 
-    // Recursively get all files from the unistream-jar directory
-    const files = await fetch('/src/materials/unistream-jar/', { 
-      headers: { 'Accept': 'application/json' }
-    });
-    const filesData = await files.json();
-
-    // Add all files except dbvis.xml (which we already added with modifications)
-    for (const file of filesData) {
-      if (file.name !== 'dbvis.xml') {
-        await addFilesToZip(file.name);
-      }
-    }
-
-    // Generate the JAR file
-    const jarBlob = await zip.generateAsync({
-      type: 'blob',
-      compression: 'DEFLATE',
-      compressionOptions: { level: 9 }
-    });
-
-    // Create download link
-    const element = document.createElement('a');
-    element.href = URL.createObjectURL(jarBlob);
-    element.download = `unistream-${email.split('@')[0]}.jar`;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-
-    toast.success(
-      "DbVisualizer JAR downloaded with your custom configuration! Import using: 'Tools > Import Connections'",
-      { duration: 6000 }
-    );
-
-    setTimeout(() => {
-      toast.info(
-        `Connection configured with Host: ${host}, Port: ${port}, User: ${email}`,
-        { duration: 5000 }
+      toast.success(
+        "DbVisualizer configuration XML downloaded! Import using: 'Tools > Import Connections'",
+        { duration: 6000 }
       );
-    }, 1000);
-  } catch (error) {
-    console.error('Error creating JAR file:', error);
-    toast.error("Failed to create and download JAR file. Please try again.");
-  }
-};
+
+      setTimeout(() => {
+        toast.info(
+          `Connection configured with Host: ${host}, Port: ${port}, User: ${email}`,
+          { duration: 5000 }
+        );
+      }, 1000);
+    } catch (error) {
+      console.error('Error creating configuration file:', error);
+      toast.error("Failed to create configuration file. Please try again.");
+    }
+  };
 
   const integrations: IntegrationCard[] = [
     {
