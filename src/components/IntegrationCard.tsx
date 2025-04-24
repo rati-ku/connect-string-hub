@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Copy, Download } from "lucide-react";
@@ -14,6 +13,7 @@ export interface IntegrationCardProps {
   downloadHandler?: () => Promise<void>;
   onCopyString?: () => void;
   onDownloadConfig?: () => void;
+  onDocsClick?: () => void;
 }
 
 const IntegrationCard = ({
@@ -27,6 +27,7 @@ const IntegrationCard = ({
   downloadHandler,
   onCopyString,
   onDownloadConfig,
+  onDocsClick,
 }: IntegrationCardProps) => {
   return (
     <Card className="p-6">
@@ -43,6 +44,7 @@ const IntegrationCard = ({
         <h3 className="text-xl font-semibold">{name}</h3>
       </div>
       <p className="text-gray-600 mb-4">{description}</p>
+      
       <div className="space-y-3">
         <div className="flex gap-4">
           {productUrl && (
@@ -53,10 +55,12 @@ const IntegrationCard = ({
             </Button>
           )}
           {docsUrl && (
-            <Button variant="outline" className="w-full" asChild>
-              <a href={docsUrl} target="_blank" rel="noopener noreferrer">
-                Documentation
-              </a>
+            <Button 
+              variant="outline" 
+              className="w-full" 
+              onClick={onDocsClick}
+            >
+              Documentation
             </Button>
           )}
         </div>

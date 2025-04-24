@@ -6,6 +6,7 @@ import DBeaverLogo from '@/components/logos/DBeaverLogo';
 import DbVisualizerLogo from '@/components/logos/DbVisualizerLogo';
 import ConnectionSettingsForm from '@/components/ConnectionSettingsForm';
 import IntegrationCard from '@/components/IntegrationCard';
+import DocumentationDrawer from '@/components/DocumentationDrawer';
 import { Button } from "@/components/ui/button";
 import { Copy, Download } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -14,6 +15,7 @@ const Integrations = () => {
   const [host, setHost] = useState('20.215.192.107');
   const [port, setPort] = useState('8123');
   const [email, setEmail] = useState('ratiku@datamind.ge');
+  const [isDocDrawerOpen, setIsDocDrawerOpen] = useState(false);
 
   const getDatagripConnectionString = (host: string, port: string, email: string) => {
     return `#DataSourceSettings#
@@ -144,9 +146,10 @@ const Integrations = () => {
       description: "DataGrip is a powerful database IDE which is our top recommendation for working with the Unistream platform",
       logo: <DatagripLogo />,
       productUrl: "https://www.jetbrains.com/datagrip/",
-      docsUrl: "https://www.jetbrains.com/help/datagrip/",
+      docsUrl: "https://docs.unistream.cloud/getting-started/deployment-options/on-premise-deployment",
       connectionStringFn: getDatagripConnectionString,
-      onCopyString: () => copyConnectionString(getDatagripConnectionString)
+      onCopyString: () => copyConnectionString(getDatagripConnectionString),
+      onDocsClick: () => setIsDocDrawerOpen(true)
     },
     {
       name: "DBeaver",
@@ -203,71 +206,18 @@ const Integrations = () => {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {integrations.map((integration) => (
-          <Card key={integration.name} className="p-6">
-            <div className="flex items-center gap-4 mb-4">
-              {typeof integration.logo === 'string' ? (
-                <img
-                  src={integration.logo}
-                  alt={`${integration.name} logo`}
-                  className="w-16 h-16 object-contain"
-                />
-              ) : (
-                integration.logo
-              )}
-              <h3 className="text-xl font-semibold">{integration.name}</h3>
-            </div>
-            <p className="text-gray-600 mb-4">{integration.description}</p>
-            <div className="space-y-3">
-              <div className="flex gap-4">
-                {integration.productUrl && (
-                  <Button variant="outline" className="w-full" asChild>
-                    <a href={integration.productUrl} target="_blank" rel="noopener noreferrer">
-                      Visit Website
-                    </a>
-                  </Button>
-                )}
-                {integration.docsUrl && (
-                  <Button variant="outline" className="w-full" asChild>
-                    <a href={integration.docsUrl} target="_blank" rel="noopener noreferrer">
-                      Documentation
-                    </a>
-                  </Button>
-                )}
-              </div>
-              
-              {integration.connectionStringFn && (
-                <Button 
-                  onClick={() => copyConnectionString(integration.connectionStringFn!)} 
-                  className="w-full"
-                >
-                  <Copy className="w-4 h-4 mr-2" />
-                  Copy Connection String
-                </Button>
-              )}
-              
-              {integration.connectionConfigFn && (
-                <Button
-                  onClick={() => downloadConnectionConfig(integration.connectionConfigFn!)}
-                  className="w-full"
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  Download Connection Config
-                </Button>
-              )}
-
-              {integration.downloadHandler && (
-                <Button
-                  onClick={integration.downloadHandler}
-                  className="w-full"
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  Download Configuration
-                </Button>
-              )}
-            </div>
-          </Card>
+          <IntegrationCard 
+            key={integration.name} 
+            {...integration} 
+          />
         ))}
       </div>
+
+      <DocumentationDrawer 
+        isOpen={isDocDrawerOpen}
+        onClose={() => setIsDocDrawerOpen(false)}
+        url="https://docs.unistream.cloud/getting-started/deployment-options/on-premise-deployment"
+      />
     </div>
   );
 };
