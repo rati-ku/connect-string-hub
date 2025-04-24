@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Copy, Download } from "lucide-react";
+import JSZip from 'jszip';
 
 interface IntegrationCard {
   name: string;
@@ -131,57 +132,117 @@ const Integrations = () => {
     toast.success("Connection configuration downloaded!");
   };
 
-  const downloadDbVisualizer = async () => {
-    try {
-      // Fetch the JAR file
-      const response = await fetch('/src/materials/unistream.jar');
-      const jarBlob = await response.blob();
-      
-      // Convert blob to array buffer to manipulate content
-      const arrayBuffer = await jarBlob.arrayBuffer();
-      
-      // Create a text decoder to read the XML content
-      const decoder = new TextDecoder('utf-8');
-      const xmlContent = decoder.decode(arrayBuffer);
-      
-      // Replace the values in the XML content
-      const modifiedXml = xmlContent
-        .replace(/<Alias>🚀 Unistream 🚀 ratiku@datamind\.ge<\/Alias>/g, `<Alias>🚀 Unistream 🚀 ${email}</Alias>`)
-        .replace(/<Userid>ratiku@datamind\.ge<\/Userid>/g, `<Userid>${email}</Userid>`)
-        .replace(/<UrlVariable UrlVariableName="Server">20\.215\.192\.107<\/UrlVariable>/g, `<UrlVariable UrlVariableName="Server">${host}</UrlVariable>`)
-        .replace(/<UrlVariable UrlVariableName="Port">8123<\/UrlVariable>/g, `<UrlVariable UrlVariableName="Port">${port}</UrlVariable>`);
-      
-      // Convert the modified XML back to a blob
-      const encoder = new TextEncoder();
-      const modifiedContent = encoder.encode(modifiedXml);
-      const modifiedJar = new Blob([modifiedContent], { type: 'application/java-archive' });
-      
-      // Create download link with metadata showing it's been customized
-      const element = document.createElement("a");
-      element.href = URL.createObjectURL(modifiedJar);
-      element.download = `unistream-${email.split('@')[0]}.jar`;
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
-      
-      // Show success message with instructions
-      toast.success(
-        "DbVisualizer JAR downloaded with your custom configuration! Import using: 'Tools > Import Connections'",
-        { duration: 6000 }
+const downloadDbVisualizer = async () => {
+  try {
+    // Create a new JSZip instance
+    const zip = new JSZip();
+    
+    // Create META-INF directory and add MANIFEST.MF
+    const manifestContent = `Manifest-Version: 1.0\nDbVisualizer-Version: 25.1.3\nDbVisualizer-Config-Version: 251\nDbVisualizer-Config-Directory: config251\n`;
+    zip.file('META-INF/MANIFEST.MF', manifestContent);
+
+    // Add config251/dbvis.xml with replaced parameters
+    const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+<DbVisualizer>
+  <Databases>
+    <Database id="j7fHKTe3i4YIsGfw4n06h">
+      <Alias>&#x1f680; Unistream &#x1f680; ${email}</Alias>
+      <Notes />
+      <Url />
+      <Driver>ClickHouse</Driver>
+      <DriverId>3a386447-caec-406d-9021-abaefd9dcb98</DriverId>
+      <Userid>${email}</Userid>
+      <Profile>auto</Profile>
+      <Type>clickhouse</Type>
+      <Password />
+      <ServerInfoFormat>1</ServerInfoFormat>
+      <AutoDetectType>true</AutoDetectType>
+      <Properties>
+        <Property key="socket_timeout">300000</Property>
+        <Property key="dbvis.ConnectionModeMigrated">true</Property>
+        <Property key="dbvis.InlineEditorCommitBatchSize">1</Property>
+        <Property key="dbvis.SQLCommanderMostRecentSchema">default</Property>
+        <Property key="dbvis.TextToBinaryEncoding">UTF-8</Property>
+      </Properties>
+      <UrlFormat>0</UrlFormat>
+      <UrlVariables>
+        <Driver DriverId="3a386447-caec-406d-9021-abaefd9dcb98" TemplateId="clickhouse" DriverLabel="ClickHouse">
+          <UrlVariable UrlVariableName="Server">${host}</UrlVariable>
+          <UrlVariable UrlVariableName="Port">${port}</UrlVariable>
+          <UrlVariable UrlVariableName="Database" />
+        </Driver>
+      </UrlVariables>
+    </Database>
+  </Databases>
+  <Objects>
+    <Database id="j7fHKTe3i4YIsGfw4n06h" />
+  </Objects>
+</DbVisualizer>`;
+
+    zip.file('config251/dbvis.xml', xmlContent);
+
+    // Fetch all files from the drivers directory recursively
+    const driversResponse = await fetch('/src/materials/unistream-jar/drivers/maven/', { 
+      headers: { 'Accept': 'application/json' }
+    });
+    const driversData = await driversResponse.json();
+
+    // Recursively add all files from the drivers directory
+    const addFilesToZip = async (path) => {
+      const response = await fetch(path);
+      if (response.ok) {
+        const content = await response.blob();
+        const relativePath = path.replace('/src/materials/unistream-jar/', '');
+        zip.file(relativePath, content);
+      }
+    };
+
+    // Add all driver files
+    const addDrivers = async (currentPath) => {
+      for (const item of driversData) {
+        if (item.type === 'file') {
+          await addFilesToZip(`${currentPath}${item.name}`);
+        } else if (item.type === 'directory') {
+          const subDirResponse = await fetch(`${currentPath}${item.name}/`);
+          const subDirData = await subDirResponse.json();
+          await addDrivers(`${currentPath}${item.name}/`);
+        }
+      }
+    };
+
+    await addDrivers('/src/materials/unistream-jar/drivers/maven/');
+
+    // Generate the JAR file
+    const jarBlob = await zip.generateAsync({
+      type: 'blob',
+      compression: 'DEFLATE',
+      compressionOptions: { level: 9 }
+    });
+
+    // Create download link
+    const element = document.createElement('a');
+    element.href = URL.createObjectURL(jarBlob);
+    element.download = `unistream-${email.split('@')[0]}.jar`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+
+    toast.success(
+      "DbVisualizer JAR downloaded with your custom configuration! Import using: 'Tools > Import Connections'",
+      { duration: 6000 }
+    );
+
+    setTimeout(() => {
+      toast.info(
+        `Connection configured with Host: ${host}, Port: ${port}, User: ${email}`,
+        { duration: 5000 }
       );
-      
-      // Show additional info toast about the XML modification
-      setTimeout(() => {
-        toast.info(
-          `Connection configured with Host: ${host}, Port: ${port}, User: ${email}`,
-          { duration: 5000 }
-        );
-      }, 1000);
-    } catch (error) {
-      console.error('Error modifying and downloading JAR file:', error);
-      toast.error("Failed to customize and download JAR file. Please try again.");
-    }
-  };
+    }, 1000);
+  } catch (error) {
+    console.error('Error creating JAR file:', error);
+    toast.error("Failed to create and download JAR file. Please try again.");
+  }
+};
 
   const integrations: IntegrationCard[] = [
     {
