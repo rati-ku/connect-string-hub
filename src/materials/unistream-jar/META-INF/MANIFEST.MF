@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-DbVisualizer-Version: 25.1.3
-DbVisualizer-Config-Version: 251
-DbVisualizer-Config-Directory: config251
-
