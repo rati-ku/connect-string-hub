@@ -179,6 +179,43 @@ const Integrations = () => {
     }
   };
 
+  const downloadODC = () => {
+    const odcContent = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=Content-Type content="text/x-ms-odc; charset=utf-8">
+<meta name=ProgId content=ODC.Table>
+<meta name=SourceType content=OLEDB>
+<title>Unistream Connection</title>
+<xml id=docprops><o:DocumentProperties
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns="http://www.w3.org/TR/REC-html40">
+  <o:Name>Unistream Connection</o:Name>
+ </o:DocumentProperties>
+</xml>
+<xml id=msodc><odc:OfficeDataConnection
+  xmlns:odc="urn:schemas-microsoft-com:office:odc"
+  xmlns="http://www.w3.org/TR/REC-html40">
+  <odc:Connection odc:Type="OLEDB">
+   <odc:ConnectionString>Provider=MSDASQL.1;Persist Security Info=True;User ID=${email};Data Source=ClickHouse;Initial Catalog=default;Host=${host};Port=${port}</odc:ConnectionString>
+   <odc:CommandType>Table</odc:CommandType>
+   <odc:CommandText>SELECT * FROM system.tables</odc:CommandText>
+  </odc:Connection>
+ </odc:OfficeDataConnection>
+</xml>
+</head>
+</html>`;
+
+    const element = document.createElement("a");
+    const file = new Blob([odcContent], { type: 'application/vnd.ms-excel' });
+    element.href = URL.createObjectURL(file);
+    element.download = "unistream-connection.odc";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+    toast.success("ODC file downloaded!");
+  };
+
   const integrations = [
     {
       name: "DataGrip",
@@ -208,28 +245,32 @@ const Integrations = () => {
       downloadHandler: downloadDbVisualizer
     },
     {
-      name: "Power BI",
-      description: "Microsoft Power BI is an interactive data visualization software product developed by Microsoft with a primary focus on business intelligence",
-      logo: <PowerBILogo />,
-      productUrl: "https://powerbi.microsoft.com/",
-      docsUrl: "https://learn.microsoft.com/en-us/power-bi/",
-      downloadHandler: downloadPowerBITemplate
-    },
-    {
-      name: "QStudio",
-      description: "qStudio is a free SQL GUI for running SQL scripts and charting results",
-      logo: <QStudioLogo />,
-      productUrl: "https://clickhouse.com/",
-      docsUrl: "https://clickhouse.com/docs/",
-      downloadHandler: downloadQStudioConfig
-    },
-    {
       name: "Excel",
       description: "Microsoft Excel with ClickHouse integration enables powerful data analysis and visualization capabilities directly from your spreadsheets",
       logo: "/lovable-uploads/7aabb7a8-26ee-4b38-bcf4-d4adbeeb1289.png",
       productUrl: "https://www.microsoft.com/excel",
       docsUrl: "https://support.microsoft.com/excel",
+      downloadHandler: downloadODC
     },
+    {
+      name: "Power BI",
+      description: "Microsoft Power BI is an interactive data visualization software product developed by Microsoft with a primary focus on business intelligence",
+      logo: <PowerBILogo />,
+      productUrl: "https://powerbi.microsoft.com/",
+      docsUrl: "https://learn.microsoft.com/en-us/power-bi/",
+      downloadHandler: async () => {
+        toast.info("Power BI template download will be available soon!");
+        return Promise.resolve();
+      }
+    },
+    {
+      name: "QStudio",
+      description: "qStudio is a free SQL GUI for running SQL scripts and charting results with an intuitive interface and powerful visualization capabilities for data analysts",
+      logo: <QStudioLogo />,
+      productUrl: "https://clickhouse.com/",
+      docsUrl: "https://clickhouse.com/docs/",
+      downloadHandler: downloadQStudioConfig
+    }
   ];
 
   return (
