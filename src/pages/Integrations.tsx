@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -102,6 +103,13 @@ const Integrations = () => {
         }
       }
     }, null, 2);
+  };
+  
+  // Add the missing copyConnectionString function
+  const copyConnectionString = (connectionStringFn: (host: string, port: string, email: string) => string) => {
+    const connectionString = connectionStringFn(host, port, email);
+    navigator.clipboard.writeText(connectionString);
+    toast.success("Connection string copied to clipboard!");
   };
 
   const downloadConnectionConfig = (connectionConfigFn: (host: string, port: string, email: string) => string) => {
