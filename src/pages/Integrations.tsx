@@ -65,6 +65,14 @@ const DBeaverLogo = () => (
   />
 );
 
+const DbVisualizerLogo = () => (
+  <img 
+    src="/lovable-uploads/175f7a56-0a2c-4e0e-893b-69b295f4f552.png" 
+    alt="DbVisualizer Logo" 
+    className="w-16 h-16 object-contain"
+  />
+);
+
 const Integrations = () => {
   const [host, setHost] = useState('20.215.192.107');
   const [port, setPort] = useState('8123');
@@ -122,6 +130,27 @@ const Integrations = () => {
     toast.success("Connection configuration downloaded!");
   };
 
+  const downloadDbVisualizer = async () => {
+    try {
+      // Fetch the JAR file
+      const response = await fetch('/src/materials/unistream.jar');
+      const blob = await response.blob();
+      
+      // Create download link
+      const element = document.createElement("a");
+      element.href = URL.createObjectURL(blob);
+      element.download = "unistream.jar";
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+      
+      toast.success("DbVisualizer JAR file downloaded!");
+    } catch (error) {
+      console.error('Error downloading JAR file:', error);
+      toast.error("Failed to download JAR file. Please try again.");
+    }
+  };
+
   const integrations: IntegrationCard[] = [
     {
       name: "DataGrip",
@@ -134,11 +163,7 @@ const Integrations = () => {
     {
       name: "DBeaver",
       description: "DBeaver PRO is a comprehensive database management and administration tool with an easy connection to Unistream platform",
-      logo: <img 
-        src="/lovable-uploads/ed74f050-ec69-432f-aeff-bddfeef70872.png" 
-        alt="DBeaver Logo" 
-        className="w-16 h-16 object-contain"
-      />,
+      logo: <DBeaverLogo />,
       productUrl: "https://dbeaver.io/",
       docsUrl: "https://dbeaver.com/docs/",
       connectionConfigFn: getDbeaverConfigJson
@@ -146,14 +171,10 @@ const Integrations = () => {
     {
       name: "DbVisualizer",
       description: "DbVisualizer is a database tool with extended support for ClickHouse SQL",
-      logo: <img 
-        src="/lovable-uploads/175f7a56-0a2c-4e0e-893b-69b295f4f552.png" 
-        alt="DbVisualizer Logo" 
-        className="w-16 h-16 object-contain"
-      />,
+      logo: <DbVisualizerLogo />,
       productUrl: "https://www.dbvis.com/",
       docsUrl: "https://www.dbvis.com/docs/",
-      connectionConfigFn: undefined // We'll implement this once we have the JAR file
+      connectionConfigFn: downloadDbVisualizer // Using the download function directly
     },
     {
       name: "QStudio",
