@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -135,7 +134,11 @@ const Integrations = () => {
     {
       name: "DBeaver",
       description: "DBeaver PRO is a comprehensive database management and administration tool with an easy connection to Unistream platform",
-      logo: <DBeaverLogo />,
+      logo: <img 
+        src="/lovable-uploads/ed74f050-ec69-432f-aeff-bddfeef70872.png" 
+        alt="DBeaver Logo" 
+        className="w-16 h-16 object-contain"
+      />,
       productUrl: "https://dbeaver.io/",
       docsUrl: "https://dbeaver.com/docs/",
       connectionConfigFn: getDbeaverConfigJson
@@ -143,9 +146,14 @@ const Integrations = () => {
     {
       name: "DbVisualizer",
       description: "DbVisualizer is a database tool with extended support for ClickHouse SQL",
-      logo: "/lovable-uploads/98f9112e-0d6a-412b-b637-9367f7795e6c.png",
+      logo: <img 
+        src="/lovable-uploads/175f7a56-0a2c-4e0e-893b-69b295f4f552.png" 
+        alt="DbVisualizer Logo" 
+        className="w-16 h-16 object-contain"
+      />,
       productUrl: "https://www.dbvis.com/",
       docsUrl: "https://www.dbvis.com/docs/",
+      connectionConfigFn: undefined // We'll implement this once we have the JAR file
     },
     {
       name: "QStudio",
