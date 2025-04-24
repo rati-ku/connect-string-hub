@@ -6,8 +6,8 @@ import { toast } from "sonner";
 import { Copy, Download } from "lucide-react";
 import JSZip from 'jszip';
 
-// Import the DBeaver logo SVG
-import { ReactComponent as DBeaverLogo } from '@/materials/dbreaver.svg';
+// Import the DBeaver logo SVG directly
+import DBeaverLogoSvg from '@/materials/dbreaver.svg';
 
 interface IntegrationCard {
   name: string;
@@ -60,6 +60,15 @@ const DatagripLogo = () => (
       </clipPath>
     </defs>
   </svg>
+);
+
+// Use the imported SVG as an image source instead of trying to use it as a React component
+const DBeaverLogo = () => (
+  <img 
+    src={DBeaverLogoSvg}
+    alt="DBeaver Logo" 
+    className="w-16 h-16 object-contain"
+  />
 );
 
 const DbVisualizerLogo = () => (
