@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -65,7 +66,7 @@ const Integrations = () => {
     return `#DataSourceSettings#
 #LocalDataSource: 🚀 Unistream 🚀 ${email}
 #BEGIN#
-<data-source source="LOCAL" name="🚀 Unistream 🚀 ${email}" read-only="true" uuid="02fd7e27-a3fe-4556-aa98-895e0579f665"><database-info product="ClickHouse" version="25.2.2.39" jdbc-version="4.2" driver-name="ClickHouse JDBC Driver" driver-version="0.6.3 (revision: a6a8a22)" dbms="CLICKHOUSE" exact-version="25.2.2.39" exact-driver-version="0.6"><identifier-quote-string>\`</identifier-quote-string></database-info><case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/><driver-ref>clickhouse</driver-ref><synchronize>true</synchronize><jdbc-driver>com.clickhouse.jdbc.ClickHouseDriver</jdbc-driver><jdbc-url>jdbc:clickhouse://${host}:${port}/information_schema</jdbc-url><secret-storage>master_key</secret-storage><user-name>${email}</user-name><schema-mapping><introspection-scope><node kind="schema"><name qname="@"/></introspection-scope></schema-mapping><load-sources>user_and_system_sources</load-sources><working-dir>$ProjectFileDir$</working-dir><driver-properties><property name="socket_timeout" value="300000"/></driver-properties><keep-alive enable="true"/><auto-close enable="true"/></data-source>
+<data-source source="LOCAL" name="🚀 Unistream 🚀 ${email}" read-only="true" uuid="02fd7e27-a3fe-4556-aa98-895e0579f665"><database-info product="ClickHouse" version="25.2.2.39" jdbc-version="4.2" driver-name="ClickHouse JDBC Driver" driver-version="0.6.3 (revision: a6a8a22)" dbms="CLICKHOUSE" exact-version="25.2.2.39" exact-driver-version="0.6"><identifier-quote-string>"</identifier-quote-string></database-info><case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/><driver-ref>clickhouse</driver-ref><synchronize>true</synchronize><jdbc-driver>com.clickhouse.jdbc.ClickHouseDriver</jdbc-driver><jdbc-url>jdbc:clickhouse://${host}:${port}/information_schema</jdbc-url><secret-storage>master_key</secret-storage><user-name>${email}</user-name><schema-mapping><introspection-scope><node kind="schema"><name qname="@"/><name qname="admin_Lake"/></node></introspection-scope></schema-mapping><load-sources>user_and_system_sources</load-sources><working-dir>$ProjectFileDir$</working-dir><driver-properties><property name="socket_timeout" value="300000"/></driver-properties><keep-alive enable="true"/><auto-close enable="true"/></data-source>
 #END#`;
   };
 
