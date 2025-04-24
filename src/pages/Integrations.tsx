@@ -13,6 +13,7 @@ interface IntegrationCard {
   docsUrl?: string;
   connectionStringFn?: (host: string, port: string, email: string) => string;
   connectionConfigFn?: (host: string, port: string, email: string) => string;
+  downloadHandler?: () => Promise<void>; // Add a new property for download handlers
 }
 
 const DatagripLogo = () => (
@@ -174,7 +175,7 @@ const Integrations = () => {
       logo: <DbVisualizerLogo />,
       productUrl: "https://www.dbvis.com/",
       docsUrl: "https://www.dbvis.com/docs/",
-      connectionConfigFn: downloadDbVisualizer // Using the download function directly
+      downloadHandler: downloadDbVisualizer // Use the new property instead
     },
     {
       name: "QStudio",
@@ -269,7 +270,7 @@ const Integrations = () => {
               
               {integration.connectionStringFn && (
                 <Button 
-                  onClick={() => copyConnectionString(integration.connectionStringFn)} 
+                  onClick={() => copyConnectionString(integration.connectionStringFn!)} 
                   className="w-full"
                 >
                   <Copy className="w-4 h-4 mr-2" />
@@ -279,7 +280,17 @@ const Integrations = () => {
               
               {integration.connectionConfigFn && (
                 <Button 
-                  onClick={() => downloadConnectionConfig(integration.connectionConfigFn)}
+                  onClick={() => downloadConnectionConfig(integration.connectionConfigFn!)}
+                  className="w-full"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Download Connection
+                </Button>
+              )}
+              
+              {integration.downloadHandler && (
+                <Button 
+                  onClick={integration.downloadHandler}
                   className="w-full"
                 >
                   <Download className="w-4 h-4 mr-2" />
