@@ -104,6 +104,17 @@ const Integrations = () => {
     }, null, 2);
   };
 
+  const downloadConnectionConfig = (connectionConfigFn: (host: string, port: string, email: string) => string) => {
+    const element = document.createElement("a");
+    const file = new Blob([connectionConfigFn(host, port, email)], { type: 'application/json' });
+    element.href = URL.createObjectURL(file);
+    element.download = "data-sources-unistream.json";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+    toast.success("Connection configuration downloaded!");
+  };
+
   const integrations: IntegrationCard[] = [
     {
       name: "DataGrip",
@@ -150,41 +161,6 @@ const Integrations = () => {
       docsUrl: "https://support.microsoft.com/excel",
     },
   ];
-
-  const copyConnectionString = (connectionStringFn?: (host: string, port: string, email: string) => string) => {
-    if (!connectionStringFn) {
-      const defaultString = `clickhouse://${host}:${port}/?user=${email}`;
-      navigator.clipboard.writeText(defaultString);
-      toast.success("Connection string copied to clipboard!");
-      return;
-    }
-
-    const connectionString = connectionStringFn(host, port, email);
-    navigator.clipboard.writeText(connectionString);
-    toast.success("Connection string copied to clipboard!");
-  };
-
-  const downloadConnectionConfig = (connectionConfigFn: (host: string, port: string, email: string) => string) => {
-    const element = document.createElement("a");
-    const file = new Blob([connectionConfigFn(host, port, email)], { type: 'application/json' });
-    element.href = URL.createObjectURL(file);
-    element.download = "credentials-config-unistream.json";
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-    toast.success("Connection configuration downloaded!");
-  };
-
-  const downloadConnectionString = () => {
-    const element = document.createElement("a");
-    const file = new Blob([getDatagripConnectionString(host, port, email)], { type: 'text/plain' });
-    element.href = URL.createObjectURL(file);
-    element.download = "connection-string.txt";
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-    toast.success("Connection string downloaded!");
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -253,22 +229,14 @@ const Integrations = () => {
                   </Button>
                 )}
               </div>
-              <Button 
-                onClick={() => copyConnectionString(integration.connectionStringFn)} 
-                className="w-full"
-              >
-                <Copy className="w-4 h-4 mr-2" />
-                Copy Connection String
-              </Button>
               
-              {integration.name === "DataGrip" && (
+              {integration.connectionStringFn && (
                 <Button 
-                  onClick={downloadConnectionString}
+                  onClick={() => copyConnectionString(integration.connectionStringFn)} 
                   className="w-full"
-                  variant="outline"
                 >
-                  <Download className="w-4 h-4 mr-2" />
-                  Download Connection
+                  <Copy className="w-4 h-4 mr-2" />
+                  Copy Connection String
                 </Button>
               )}
               
@@ -276,7 +244,6 @@ const Integrations = () => {
                 <Button 
                   onClick={() => downloadConnectionConfig(integration.connectionConfigFn)}
                   className="w-full"
-                  variant="outline"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Download Connection
