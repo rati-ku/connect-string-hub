@@ -16,32 +16,40 @@ const DocumentationDrawer = ({ isOpen, onClose, url }: DocumentationDrawerProps)
 
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent className="h-[80vh]">
-        <div className="absolute top-4 right-4 flex space-x-2">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={handleOpenInNewTab}
-            title="Open in new tab"
-          >
-            <ExternalLink className="h-5 w-5" />
-          </Button>
-          <DrawerClose asChild>
+      <DrawerContent className="h-[80vh] flex flex-col">
+        {/* Header section with buttons */}
+        <div className="p-4 border-b flex justify-between items-center bg-background">
+          <div className="text-sm font-medium">Documentation</div>
+          <div className="flex space-x-2">
             <Button 
               variant="ghost" 
               size="icon" 
-              onClick={onClose}
-              title="Close"
+              onClick={handleOpenInNewTab}
+              title="Open in new tab"
             >
-              <X className="h-5 w-5" />
+              <ExternalLink className="h-5 w-5" />
             </Button>
-          </DrawerClose>
+            <DrawerClose asChild>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={onClose}
+                title="Close"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </DrawerClose>
+          </div>
         </div>
-        <iframe 
-          src={url}
-          className="w-full h-full border-0"
-          title="Documentation"
-        />
+        
+        {/* Content section with iframe */}
+        <div className="flex-1 overflow-hidden">
+          <iframe 
+            src={url}
+            className="w-full h-full border-0"
+            title="Documentation"
+          />
+        </div>
       </DrawerContent>
     </Drawer>
   )
