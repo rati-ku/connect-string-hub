@@ -134,9 +134,7 @@ const Integrations = () => {
 
   const downloadDbVisualizer = async () => {
     try {
-      // Create a direct download of the XML file only
-      // This is a simplified approach since we can't access the full JAR structure in the browser environment
-      const modifiedXmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+      const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
 <DbVisualizer>
   <Databases>
     <Database id="j7fHKTe3i4YIsGfw4n06h">
@@ -173,17 +171,24 @@ const Integrations = () => {
   </Objects>
 </DbVisualizer>`;
 
-      // Create a download link for the XML file
-      const element = document.createElement("a");
-      const file = new Blob([modifiedXmlContent], { type: 'application/xml' });
-      element.href = URL.createObjectURL(file);
-      element.download = `dbvis_${email.split('@')[0]}.xml`;
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
+      const zip = new JSZip();
+      zip.file("config251/dbvis.xml", xmlContent);
+
+      const blob = await zip.generateAsync({
+        type: "blob",
+        compression: "DEFLATE",
+        compressionOptions: { level: 9 }
+      });
+
+      const downloadLink = document.createElement("a");
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.download = "unistream.jar";
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
 
       toast.success(
-        "DbVisualizer configuration XML downloaded! Import using: 'Tools > Import Connections'",
+        "DbVisualizer configuration downloaded! Import using: 'Tools > Import Connections'",
         { duration: 6000 }
       );
 
@@ -194,7 +199,7 @@ const Integrations = () => {
         );
       }, 1000);
     } catch (error) {
-      console.error('Error creating configuration file:', error);
+      console.error('Error creating JAR file:', error);
       toast.error("Failed to create configuration file. Please try again.");
     }
   };
