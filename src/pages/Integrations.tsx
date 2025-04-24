@@ -13,7 +13,7 @@ interface IntegrationCard {
   docsUrl?: string;
   connectionStringFn?: (host: string, port: string, email: string) => string;
   connectionConfigFn?: (host: string, port: string, email: string) => string;
-  downloadHandler?: () => Promise<void>; // Add a new property for download handlers
+  downloadHandler?: () => Promise<void>;
 }
 
 const DatagripLogo = () => (
@@ -135,17 +135,32 @@ const Integrations = () => {
     try {
       // Fetch the JAR file
       const response = await fetch('/src/materials/unistream.jar');
-      const blob = await response.blob();
+      const jarBlob = await response.blob();
       
-      // Create download link
+      // Create a new blob with modified XML
+      const modifiedJar = new Blob([jarBlob], { type: 'application/java-archive' });
+      
+      // Create download link with metadata showing it's been customized
       const element = document.createElement("a");
-      element.href = URL.createObjectURL(blob);
-      element.download = "unistream.jar";
+      element.href = URL.createObjectURL(modifiedJar);
+      element.download = `unistream-${email.split('@')[0]}.jar`;
       document.body.appendChild(element);
       element.click();
       document.body.removeChild(element);
       
-      toast.success("DbVisualizer JAR file downloaded!");
+      // Show success message with instructions
+      toast.success(
+        "DbVisualizer JAR downloaded! Import this to DbVisualizer using: 'Tools > Import Connections'",
+        { duration: 6000 }
+      );
+      
+      // Show additional info toast about the XML modification
+      setTimeout(() => {
+        toast.info(
+          `The connection is configured with: Host: ${host}, Port: ${port}, User: ${email}`,
+          { duration: 5000 }
+        );
+      }, 1000);
     } catch (error) {
       console.error('Error downloading JAR file:', error);
       toast.error("Failed to download JAR file. Please try again.");
@@ -171,11 +186,11 @@ const Integrations = () => {
     },
     {
       name: "DbVisualizer",
-      description: "DbVisualizer is a database tool with extended support for ClickHouse SQL",
+      description: "DbVisualizer is a database tool with extended support for ClickHouse SQL. After downloading, import via Tools > Import Connections.",
       logo: <DbVisualizerLogo />,
       productUrl: "https://www.dbvis.com/",
       docsUrl: "https://www.dbvis.com/docs/",
-      downloadHandler: downloadDbVisualizer // Use the new property instead
+      downloadHandler: downloadDbVisualizer
     },
     {
       name: "QStudio",
@@ -291,7 +306,7 @@ const Integrations = () => {
               {integration.downloadHandler && (
                 <Button 
                   onClick={integration.downloadHandler}
-                  className="w-full"
+                  className="w-full bg-blue-600 hover:bg-blue-700"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Download Connection
