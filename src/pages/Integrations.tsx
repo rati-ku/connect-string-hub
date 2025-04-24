@@ -11,6 +11,7 @@ import DocumentationDrawer from '@/components/DocumentationDrawer';
 import { Button } from "@/components/ui/button";
 import { Copy, Download } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import QStudioLogo from '@/components/logos/QStudioLogo';
 
 const Integrations = () => {
   const [host, setHost] = useState('20.215.192.107');
@@ -146,6 +147,38 @@ const Integrations = () => {
     toast.info("Power BI template download will be available soon!");
   };
 
+  const downloadQStudioConfig = async () => {
+    try {
+      const config = {
+        connection: {
+          name: `Unistream ${email}`,
+          host: host,
+          port: parseInt(port),
+          user: email,
+          database: "default",
+          settings: {
+            socket_timeout: 300000
+          }
+        }
+      };
+
+      const element = document.createElement("a");
+      const file = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+      element.href = URL.createObjectURL(file);
+      element.download = "qstudio-config.json";
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+      
+      toast.success("QStudio configuration downloaded!");
+      return Promise.resolve();
+    } catch (error) {
+      console.error('Error creating config file:', error);
+      toast.error("Failed to create configuration file. Please try again.");
+      return Promise.reject(error);
+    }
+  };
+
   const integrations = [
     {
       name: "DataGrip",
@@ -185,9 +218,10 @@ const Integrations = () => {
     {
       name: "QStudio",
       description: "qStudio is a free SQL GUI for running SQL scripts and charting results",
-      logo: "/lovable-uploads/7aabb7a8-26ee-4b38-bcf4-d4adbeeb1289.png",
+      logo: <QStudioLogo />,
       productUrl: "https://clickhouse.com/",
       docsUrl: "https://clickhouse.com/docs/",
+      downloadHandler: downloadQStudioConfig
     },
     {
       name: "Excel",
