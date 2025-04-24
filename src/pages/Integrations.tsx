@@ -137,8 +137,24 @@ const Integrations = () => {
       const response = await fetch('/src/materials/unistream.jar');
       const jarBlob = await response.blob();
       
-      // Create a new blob with modified XML
-      const modifiedJar = new Blob([jarBlob], { type: 'application/java-archive' });
+      // Convert blob to array buffer to manipulate content
+      const arrayBuffer = await jarBlob.arrayBuffer();
+      
+      // Create a text decoder to read the XML content
+      const decoder = new TextDecoder('utf-8');
+      const xmlContent = decoder.decode(arrayBuffer);
+      
+      // Replace the values in the XML content
+      const modifiedXml = xmlContent
+        .replace(/<Alias>🚀 Unistream 🚀 ratiku@datamind\.ge<\/Alias>/g, `<Alias>🚀 Unistream 🚀 ${email}</Alias>`)
+        .replace(/<Userid>ratiku@datamind\.ge<\/Userid>/g, `<Userid>${email}</Userid>`)
+        .replace(/<UrlVariable UrlVariableName="Server">20\.215\.192\.107<\/UrlVariable>/g, `<UrlVariable UrlVariableName="Server">${host}</UrlVariable>`)
+        .replace(/<UrlVariable UrlVariableName="Port">8123<\/UrlVariable>/g, `<UrlVariable UrlVariableName="Port">${port}</UrlVariable>`);
+      
+      // Convert the modified XML back to a blob
+      const encoder = new TextEncoder();
+      const modifiedContent = encoder.encode(modifiedXml);
+      const modifiedJar = new Blob([modifiedContent], { type: 'application/java-archive' });
       
       // Create download link with metadata showing it's been customized
       const element = document.createElement("a");
@@ -150,20 +166,20 @@ const Integrations = () => {
       
       // Show success message with instructions
       toast.success(
-        "DbVisualizer JAR downloaded! Import this to DbVisualizer using: 'Tools > Import Connections'",
+        "DbVisualizer JAR downloaded with your custom configuration! Import using: 'Tools > Import Connections'",
         { duration: 6000 }
       );
       
       // Show additional info toast about the XML modification
       setTimeout(() => {
         toast.info(
-          `The connection is configured with: Host: ${host}, Port: ${port}, User: ${email}`,
+          `Connection configured with Host: ${host}, Port: ${port}, User: ${email}`,
           { duration: 5000 }
         );
       }, 1000);
     } catch (error) {
-      console.error('Error downloading JAR file:', error);
-      toast.error("Failed to download JAR file. Please try again.");
+      console.error('Error modifying and downloading JAR file:', error);
+      toast.error("Failed to customize and download JAR file. Please try again.");
     }
   };
 
