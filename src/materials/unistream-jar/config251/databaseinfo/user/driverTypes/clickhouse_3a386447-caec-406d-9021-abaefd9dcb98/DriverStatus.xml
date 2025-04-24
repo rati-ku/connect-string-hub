@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<DriverStatus>
+  <resultCode>OK</resultCode>
+  <errorMessage/>
+  <scanResultCode>OK</scanResultCode>
+  <scanErrorMessage/>
+  <verifyResultCode>OK</verifyResultCode>
+  <verifyErrorMessage/>
+  <Files>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\com\clickhouse\clickhouse-jdbc\0.8.4\clickhouse-jdbc-0.8.4.jar</Path>
+      <Classes>
+        <Class type="jdbc">com.clickhouse.jdbc.ClickHouseDriver</Class>
+        <Class type="jdbc">com.clickhouse.jdbc.DriverV1</Class>
+      </Classes>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\com\clickhouse\clickhouse-client\0.8.4\clickhouse-client-0.8.4.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\com\clickhouse\clickhouse-data\0.8.4\clickhouse-data-0.8.4.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\com\clickhouse\clickhouse-http-client\0.8.4\clickhouse-http-client-0.8.4.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\org\apache\httpcomponents\client5\httpclient5\5.2.1\httpclient5-5.2.1.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\org\apache\httpcomponents\core5\httpcore5-h2\5.2\httpcore5-h2-5.2.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\org\apache\httpcomponents\core5\httpcore5\5.2.1\httpcore5-5.2.1.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\org\apache\commons\commons-compress\1.27.1\commons-compress-1.27.1.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\commons-codec\commons-codec\1.17.1\commons-codec-1.17.1.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\commons-io\commons-io\2.16.1\commons-io-2.16.1.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\org\apache\commons\commons-lang3\3.16.0\commons-lang3-3.16.0.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\com\clickhouse\jdbc-v2\0.8.4\jdbc-v2-0.8.4.jar</Path>
+      <Classes>
+        <Class type="jdbc">com.clickhouse.jdbc.Driver</Class>
+      </Classes>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\com\clickhouse\client-v2\0.8.4\client-v2-0.8.4.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\org\roaringbitmap\RoaringBitmap\0.9.47\RoaringBitmap-0.9.47.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\org\roaringbitmap\shims\0.9.47\shims-0.9.47.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\org\ow2\asm\asm\9.5\asm-9.5.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\com\fasterxml\jackson\core\jackson-core\2.17.2\jackson-core-2.17.2.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\com\google\guava\guava\33.4.6-jre\guava-33.4.6-jre.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\com\google\guava\failureaccess\1.0.3\failureaccess-1.0.3.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\org\jspecify\jspecify\1.0.0\jspecify-1.0.0.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\com\google\errorprone\error_prone_annotations\2.36.0\error_prone_annotations-2.36.0.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\com\google\j2objc\j2objc-annotations\3.0.0\j2objc-annotations-3.0.0.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\org\lz4\lz4-java\1.8.0\lz4-java-1.8.0.jar</Path>
+      <Classes/>
+    </File>
+    <File type="JAR" orig="com.clickhouse:clickhouse-jdbc:0.8.4" artifactType="maven">
+      <Path>maven\org\slf4j\slf4j-api\2.0.7\slf4j-api-2.0.7.jar</Path>
+      <Classes/>
+    </File>
+  </Files>
+  <lastDriverName>ClickHouse JDBC Driver</lastDriverName>
+  <lastDriverVersion>0.8.4</lastDriverVersion>
+  <jdbcDriverMajorMinorVersion>0.8</jdbcDriverMajorMinorVersion>
+  <currentDownloadName/>
+</DriverStatus>

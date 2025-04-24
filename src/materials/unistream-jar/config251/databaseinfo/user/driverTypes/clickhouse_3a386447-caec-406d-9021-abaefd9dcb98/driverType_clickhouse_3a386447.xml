@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<DriverTypeInfo id="3a386447-caec-406d-9021-abaefd9dcb98" setThreadContext="false" useLegacyClassLoader="false">
+  <hidden>false</hidden>
+  <supported>true</supported>
+  <Label>ClickHouse</Label>
+  <OriginId>clickhouse</OriginId>
+  <OldName/>
+  <DefaultClass>com.clickhouse.jdbc.ClickHouseDriver</DefaultClass>
+  <DatabaseType>clickhouse</DatabaseType>
+  <Description/>
+  <IsSupported>true</IsSupported>
+  <IconName/>
+  <DriverCategoryId>clickhouse</DriverCategoryId>
+  <Properties/>
+  <PropertyGroups/>
+  <Identifier>jdbc:clickhouse</Identifier>
+  <URLFormat><![CDATA[jdbc:clickhouse://${Server|localhost}${Port|8123||prefix=: }${Database|||prefix=/ }]]></URLFormat>
+  <WizardURLFormats/>
+  <MessageWhenChosen/>
+  <WebSite/>
+  <ArtifactBundle>
+    <Artifacts>
+      <Artifact type="maven">
+        <Label/>
+        <Description/>
+        <Active>true</Active>
+        <Deprecated>false</Deprecated>
+        <groupId>com.clickhouse</groupId>
+        <artifactId>clickhouse-jdbc</artifactId>
+        <version>0.8.4</version>
+        <extension/>
+        <DownloadDependencies>true</DownloadDependencies>
+        <versionRange/>
+      </Artifact>
+    </Artifacts>
+  </ArtifactBundle>
+  <BelongsToDatabaseCategory/>
+  <UpdateMessage/>
+</DriverTypeInfo>
