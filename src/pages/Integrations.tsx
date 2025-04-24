@@ -4,6 +4,7 @@ import JSZip from 'jszip';
 import DatagripLogo from '@/components/logos/DatagripLogo';
 import DBeaverLogo from '@/components/logos/DBeaverLogo';
 import DbVisualizerLogo from '@/components/logos/DbVisualizerLogo';
+import PowerBILogo from '@/components/logos/PowerBILogo';
 import ConnectionSettingsForm from '@/components/ConnectionSettingsForm';
 import IntegrationCard from '@/components/IntegrationCard';
 import DocumentationDrawer from '@/components/DocumentationDrawer';
@@ -140,6 +141,11 @@ const Integrations = () => {
     }
   };
 
+  const downloadPowerBITemplate = () => {
+    // This is a placeholder function - in a real app, you would fetch or generate the template
+    toast.info("Power BI template download will be available soon!");
+  };
+
   const integrations = [
     {
       name: "DataGrip",
@@ -169,18 +175,19 @@ const Integrations = () => {
       downloadHandler: downloadDbVisualizer
     },
     {
+      name: "Power BI",
+      description: "Microsoft Power BI is an interactive data visualization software product developed by Microsoft with a primary focus on business intelligence",
+      logo: <PowerBILogo />,
+      productUrl: "https://powerbi.microsoft.com/",
+      docsUrl: "https://learn.microsoft.com/en-us/power-bi/",
+      downloadHandler: downloadPowerBITemplate
+    },
+    {
       name: "QStudio",
       description: "qStudio is a free SQL GUI for running SQL scripts and charting results",
       logo: "/lovable-uploads/7aabb7a8-26ee-4b38-bcf4-d4adbeeb1289.png",
       productUrl: "https://clickhouse.com/",
       docsUrl: "https://clickhouse.com/docs/",
-    },
-    {
-      name: "Power BI",
-      description: "Microsoft Power BI is an interactive data visualization software product developed by Microsoft with a primary focus on business intelligence",
-      logo: "/lovable-uploads/7aabb7a8-26ee-4b38-bcf4-d4adbeeb1289.png",
-      productUrl: "https://powerbi.microsoft.com/",
-      docsUrl: "https://learn.microsoft.com/en-us/power-bi/",
     },
     {
       name: "Excel",
