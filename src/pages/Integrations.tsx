@@ -239,7 +239,7 @@ xmlns="http://www.w3.org/TR/REC-html40">
       description: "DBeaver PRO is a comprehensive database management and administration tool with an easy connection to Unistream platform",
       logo: <DBeaverLogo />,
       productUrl: "https://dbeaver.io/",
-      docsUrl: "https://dbeaver.com/docs/",
+      docsUrl: "https://docs.unistream.cloud/integration/dbeaver?theme=dark",
       connectionConfigFn: getDbeaverConfigJson,
       onDownloadConfig: () => downloadConnectionConfig(getDbeaverConfigJson),
       onDocsClick: () => setIsDocDrawerOpen(true)
