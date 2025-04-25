@@ -142,9 +142,10 @@ const Integrations = () => {
     }
   };
 
-  const downloadPowerBITemplate = () => {
+  const downloadPowerBITemplate = async () => {
     // This is a placeholder function - in a real app, you would fetch or generate the template
     toast.info("Power BI template download will be available soon!");
+    return Promise.resolve();
   };
 
   const downloadQStudioConfig = async () => {
@@ -179,7 +180,7 @@ const Integrations = () => {
     }
   };
 
-  const downloadODC = () => {
+  const downloadODC = async () => {
     const odcContent = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
 xmlns="http://www.w3.org/TR/REC-html40">
 <head>
@@ -214,6 +215,8 @@ xmlns="http://www.w3.org/TR/REC-html40">
     element.click();
     document.body.removeChild(element);
     toast.success("ODC file downloaded!");
+    
+    return Promise.resolve();
   };
 
   const integrations = [
@@ -258,10 +261,7 @@ xmlns="http://www.w3.org/TR/REC-html40">
       logo: <PowerBILogo />,
       productUrl: "https://powerbi.microsoft.com/",
       docsUrl: "https://learn.microsoft.com/en-us/power-bi/",
-      downloadHandler: async () => {
-        toast.info("Power BI template download will be available soon!");
-        return Promise.resolve();
-      }
+      downloadHandler: downloadPowerBITemplate
     },
     {
       name: "QStudio",
