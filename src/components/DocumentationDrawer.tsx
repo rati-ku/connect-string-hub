@@ -18,9 +18,9 @@ const DocumentationDrawer = ({
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
-  // Add theme=light parameter to the URL
+  // Add theme=dark parameter to the URL if not already present
   const urlWithTheme = new URL(url);
-  urlWithTheme.searchParams.set('theme', 'light');
+  urlWithTheme.searchParams.set('theme', 'dark');
 
   return <Drawer open={isOpen} onOpenChange={onClose}>
       <DrawerContent className="h-[80vh] flex flex-col">
@@ -39,7 +39,7 @@ const DocumentationDrawer = ({
           </div>
         </div>
         
-        {/* Content section with iframe - now using urlWithTheme */}
+        {/* Content section with iframe - now using urlWithTheme with dark theme */}
         <div className="flex-1 overflow-hidden">
           <iframe src={urlWithTheme.toString()} className="w-full h-full border-0" title="Documentation" />
         </div>
@@ -48,3 +48,4 @@ const DocumentationDrawer = ({
 };
 
 export default DocumentationDrawer;
+
