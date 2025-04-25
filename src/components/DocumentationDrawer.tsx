@@ -1,11 +1,14 @@
+
 import { Drawer, DrawerContent, DrawerClose } from "@/components/ui/drawer";
 import { ExternalLink, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
 interface DocumentationDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   url: string;
 }
+
 const DocumentationDrawer = ({
   isOpen,
   onClose,
@@ -14,6 +17,11 @@ const DocumentationDrawer = ({
   const handleOpenInNewTab = () => {
     window.open(url, '_blank', 'noopener,noreferrer');
   };
+
+  // Add theme=light parameter to the URL
+  const urlWithTheme = new URL(url);
+  urlWithTheme.searchParams.set('theme', 'light');
+
   return <Drawer open={isOpen} onOpenChange={onClose}>
       <DrawerContent className="h-[80vh] flex flex-col">
         {/* Header section with buttons */}
@@ -31,11 +39,12 @@ const DocumentationDrawer = ({
           </div>
         </div>
         
-        {/* Content section with iframe */}
+        {/* Content section with iframe - now using urlWithTheme */}
         <div className="flex-1 overflow-hidden">
-          <iframe src={url} className="w-full h-full border-0" title="Documentation" />
+          <iframe src={urlWithTheme.toString()} className="w-full h-full border-0" title="Documentation" />
         </div>
       </DrawerContent>
     </Drawer>;
 };
+
 export default DocumentationDrawer;
