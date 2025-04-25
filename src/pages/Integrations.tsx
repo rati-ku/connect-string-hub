@@ -219,6 +219,10 @@ xmlns="http://www.w3.org/TR/REC-html40">
     return Promise.resolve();
   };
 
+  const getQStudioConnectionString = (host: string, port: string) => {
+    return `jdbc:clickhouse://${host}:${port}/information_schema`;
+  };
+
   const integrations = [
     {
       name: "DataGrip",
@@ -249,7 +253,7 @@ xmlns="http://www.w3.org/TR/REC-html40">
     },
     {
       name: "Excel",
-      description: "Microsoft Excel with ClickHouse integration enables powerful data analysis and visualization capabilities directly from your spreadsheets",
+      description: "Microsoft Excel with Unistream Platform integration enables powerful analysis directly from your spreadsheets",
       logo: "/lovable-uploads/7aabb7a8-26ee-4b38-bcf4-d4adbeeb1289.png",
       productUrl: "https://www.microsoft.com/excel",
       docsUrl: "https://support.microsoft.com/excel",
@@ -257,10 +261,10 @@ xmlns="http://www.w3.org/TR/REC-html40">
     },
     {
       name: "Power BI",
-      description: "Microsoft Power BI is an interactive data visualization software product developed by Microsoft with a primary focus on business intelligence",
-      logo: <PowerBILogo />,
       productUrl: "https://powerbi.microsoft.com/",
       docsUrl: "https://learn.microsoft.com/en-us/power-bi/",
+      description: "Microsoft Power BI is an interactive data visualization software product developed by Microsoft with a primary focus on business intelligence",
+      logo: <PowerBILogo />,
       downloadHandler: downloadPowerBITemplate
     },
     {
@@ -269,7 +273,9 @@ xmlns="http://www.w3.org/TR/REC-html40">
       logo: <QStudioLogo />,
       productUrl: "https://clickhouse.com/",
       docsUrl: "https://clickhouse.com/docs/",
-      downloadHandler: downloadQStudioConfig
+      downloadHandler: downloadQStudioConfig,
+      connectionStringFn: getQStudioConnectionString,
+      onCopyString: () => copyConnectionString(getQStudioConnectionString)
     }
   ];
 
