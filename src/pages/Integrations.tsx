@@ -253,7 +253,7 @@ xmlns="http://www.w3.org/TR/REC-html40">
     },
     {
       name: "Excel",
-      description: "Microsoft Excel with Unistream Platform integration enables powerful analysis directly from your spreadsheets",
+      description: "Excel with Unistream integration enables powerful analysis directly from your spreadsheets",
       logo: "/lovable-uploads/7aabb7a8-26ee-4b38-bcf4-d4adbeeb1289.png",
       productUrl: "https://www.microsoft.com/excel",
       docsUrl: "https://support.microsoft.com/excel",
@@ -273,7 +273,6 @@ xmlns="http://www.w3.org/TR/REC-html40">
       logo: <QStudioLogo />,
       productUrl: "https://clickhouse.com/",
       docsUrl: "https://clickhouse.com/docs/",
-      downloadHandler: downloadQStudioConfig,
       connectionStringFn: getQStudioConnectionString,
       onCopyString: () => copyConnectionString(getQStudioConnectionString)
     }
