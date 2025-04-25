@@ -27,13 +27,14 @@ const ConnectionSettingsForm = ({
       <h2 className="text-2xl font-semibold mb-4">Connection Settings</h2>
       <div className="grid gap-4">
         <div className="grid grid-cols-4 gap-2 items-center">
-          <div>
-            <label className="block text-sm font-medium mb-2">Host</label>
+          <div className="col-span-1">
+            <label className="block text-sm font-medium mb-2 truncate">Host</label>
             <div className="flex gap-2">
               <Input
                 value={host}
                 readOnly
-                className="bg-gray-50"
+                className="bg-gray-50 text-sm"
+                placeholder="Host"
               />
               <Button
                 variant="outline"
@@ -44,13 +45,14 @@ const ConnectionSettingsForm = ({
               </Button>
             </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium mb-2">Port</label>
+          <div className="col-span-1">
+            <label className="block text-sm font-medium mb-2 truncate">Port</label>
             <div className="flex gap-2">
               <Input
                 value={port}
                 readOnly
-                className="bg-gray-50"
+                className="bg-gray-50 text-sm"
+                placeholder="Port"
               />
               <Button
                 variant="outline"
@@ -61,13 +63,14 @@ const ConnectionSettingsForm = ({
               </Button>
             </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium mb-2">Email</label>
+          <div className="col-span-1">
+            <label className="block text-sm font-medium mb-2 truncate">Email</label>
             <div className="flex gap-2">
               <Input
                 value={email}
                 readOnly
-                className="bg-gray-50"
+                className="bg-gray-50 text-sm"
+                placeholder="Email"
               />
               <Button
                 variant="outline"
@@ -78,13 +81,14 @@ const ConnectionSettingsForm = ({
               </Button>
             </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium mb-2">JDBC String</label>
+          <div className="col-span-1">
+            <label className="block text-sm font-medium mb-2 truncate">JDBC String</label>
             <div className="flex gap-2">
               <Input
                 value={jdbcString}
                 readOnly
-                className="bg-gray-50"
+                className="bg-gray-50 text-sm"
+                placeholder="JDBC String"
               />
               <Button
                 variant="outline"

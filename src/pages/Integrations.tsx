@@ -14,9 +14,9 @@ import { Card } from "@/components/ui/card";
 import QStudioLogo from '@/components/logos/QStudioLogo';
 
 const Integrations = () => {
-  const [host, setHost] = useState('20.215.192.107');
-  const [port, setPort] = useState('8123');
-  const [email, setEmail] = useState('ratiku@datamind.ge');
+  const [host] = useState('20.215.192.107');
+  const [port] = useState('8123');
+  const [email] = useState('ratiku@datamind.ge');
   const [isDocDrawerOpen, setIsDocDrawerOpen] = useState(false);
 
   const getDatagripConnectionString = (host: string, port: string, email: string) => {
@@ -286,9 +286,6 @@ xmlns="http://www.w3.org/TR/REC-html40">
         host={host}
         port={port}
         email={email}
-        onHostChange={setHost}
-        onPortChange={setPort}
-        onEmailChange={setEmail}
       />
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
