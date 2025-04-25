@@ -241,7 +241,8 @@ xmlns="http://www.w3.org/TR/REC-html40">
       productUrl: "https://dbeaver.io/",
       docsUrl: "https://dbeaver.com/docs/",
       connectionConfigFn: getDbeaverConfigJson,
-      onDownloadConfig: () => downloadConnectionConfig(getDbeaverConfigJson)
+      onDownloadConfig: () => downloadConnectionConfig(getDbeaverConfigJson),
+      onDocsClick: () => setIsDocDrawerOpen(true)
     },
     {
       name: "DbVisualizer",
@@ -300,7 +301,7 @@ xmlns="http://www.w3.org/TR/REC-html40">
       <DocumentationDrawer 
         isOpen={isDocDrawerOpen}
         onClose={() => setIsDocDrawerOpen(false)}
-        url="https://docs.unistream.cloud/getting-started/deployment-options/on-premise-deployment"
+        url={integrations.find(i => i.name === "DBeaver")?.docsUrl + "?theme=dark" || ""}
       />
     </div>
   );
